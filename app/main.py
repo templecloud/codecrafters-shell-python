@@ -1,5 +1,6 @@
 import sys
 
+builtins = { "exit", "echo", "type" }
 
 def handle_command(command):
     cmd_tokens = command.split(" ")
@@ -16,7 +17,14 @@ def handle_command(command):
     elif cmd == "echo":
         to_echo = command[len(cmd) + 1:]
         sys.stdout.write(to_echo + "\n")
-
+    elif cmd == "type":
+        arg1 = cmd_tokens[1] if len(cmd_tokens) > 1 else None
+        if arg1 in builtins:
+            sys.stdout.write(f"{arg1} is a shell builtin\n")
+        else:
+            if arg1:
+                sys.stdout.write(f"{arg1}: not found\n")
+            
     else:
         sys.stdout.write(f"{cmd}: command not found\n")
 
