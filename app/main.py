@@ -15,7 +15,7 @@ def handle_command(command):
         sys.exit(exit_code)
     elif cmd == "echo":
         to_echo = command[len(cmd) + 1:]
-        sys.stdout.write(to_echo)
+        sys.stdout.write(to_echo + "\n")
 
     else:
         sys.stdout.write(f"{cmd}: command not found\n")
