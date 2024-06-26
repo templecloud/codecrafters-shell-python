@@ -1,3 +1,4 @@
+import os
 import sys
 
 builtins = { "exit", "echo", "type" }
@@ -17,16 +18,30 @@ def handle_command(command):
     elif cmd == "echo":
         to_echo = command[len(cmd) + 1:]
         sys.stdout.write(to_echo + "\n")
+        return
     elif cmd == "type":
         arg1 = cmd_tokens[1] if len(cmd_tokens) > 1 else None
         if arg1 in builtins:
             sys.stdout.write(f"{arg1} is a shell builtin\n")
+            return
         else:
-            if arg1:
-                sys.stdout.write(f"{arg1}: not found\n")
+            paths = os.environ.get('PATH').split(":")
+            for path in paths:
+                p = path.strip()
+                if os.path.isdir(p):
+                    files = os.listdir(p)
+                    for file in files:
+                        if file == arg1:
+                            sys.stdout.write(f"{arg1} is {path}/{arg1}\n")
+                            return
+
+        if arg1:
+            sys.stdout.write(f"{arg1}: not found\n")
+            return
             
     else:
         sys.stdout.write(f"{cmd}: command not found\n")
+        return
 
 def main():
     while True:
