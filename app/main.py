@@ -55,6 +55,8 @@ def handle_command(command):
         return
     elif cmd == "cd":
         arg1 = cmd_tokens[1] if len(cmd_tokens) > 1 else None
+        if arg1.startswith("~"):
+            arg1 = os.path.expanduser("~") + arg1[1:]
         try:
             os.chdir(arg1)
         except FileNotFoundError:
