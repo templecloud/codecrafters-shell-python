@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 
-builtins = { "exit", "echo", "type", "pwd" }
+builtins = { "exit", "echo", "type", "pwd", "cd" }
 
 def has_command(name) -> bool:
     return get_binary_path(name) is not None
@@ -50,8 +50,19 @@ def handle_command(command):
             sys.stdout.write(f"{arg1}: not found\n")
             return
     elif cmd == "pwd":
-        pwd = os.environ.get('PWD')
+        pwd = os.getcwd()
         sys.stdout.write(pwd + "\n")
+        return
+    elif cmd == "cd":
+        arg1 = cmd_tokens[1] if len(cmd_tokens) > 1 else None
+        try:
+            os.chdir(arg1)
+        except FileNotFoundError:
+            sys.stdout.write(f"cd: {arg1}: No such file or directory\n")
+        except PermissionError:
+            sys.stdout.write(f"cd: {arg1}: Invalid permissions\n")
+        except Exception as e:
+            sys.stdout.write(f"cd: {arg1}: {e}\n")
         return  
     else:
         arg1 = cmd_tokens[1] if len(cmd_tokens) > 1 else None
