@@ -49,6 +49,10 @@ def handle_command(command):
         if arg1:
             sys.stdout.write(f"{arg1}: not found\n")
             return
+    elif cmd == "pwd":
+        pwd = os.environ.get('PWD')
+        sys.stdout.write(pwd + "\n")
+        return  
     else:
         arg1 = cmd_tokens[1] if len(cmd_tokens) > 1 else None
         if has_command(cmd):
