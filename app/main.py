@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 
-builtins = { "exit", "echo", "type" }
+builtins = { "exit", "echo", "type", "pwd" }
 
 def has_command(name) -> bool:
     return get_binary_path(name) is not None
